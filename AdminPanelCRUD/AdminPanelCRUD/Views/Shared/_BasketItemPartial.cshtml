@@ -1,0 +1,36 @@
+﻿@model List<CheckoutItemViewModel>
+@if (Model.Count > 0)
+{
+    foreach (var item in Model)
+    {
+        <div class="cart-product basketItem">
+            <a href="product-details.html" class="image">
+                <img class="basketItemImage" src="~/uploads/books/@item.Book.BookImages.FirstOrDefault(x=>x.IsPoster==true)?.Image" alt="">
+            </a>
+            <div class="content">
+                <h3 class="title">
+                    <a class="basketItemTitle" href="product-details.html">
+                        @item.Book.Name
+                    </a>
+                </h3>
+                <p class="price"><span class="qty basketItemCount">@item.Count ×</span>£@Math.Round((item.Book.SalePrice * (1 - item.Book.Discount / 100)),2)</p>
+                <button class="cross-btn"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+    }
+    <div class=" single-cart-block ">
+        <div class="btn-block">
+            <a href="cart.html" class="btn">
+                View Cart <i class="fas fa-chevron-right"></i>
+            </a>
+            <a asp-controller="book" asp-action="checkout" class="btn btn--primary">
+                Check Out <i class="fas fa-chevron-right"></i>
+            </a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="text-danger text-center font-weight-bold" style="font-size:24px;">Səbət boşdur!</div>
+
+}

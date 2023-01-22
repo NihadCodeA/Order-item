@@ -1,0 +1,179 @@
+﻿@model OrderViewModel
+@{
+    double totalPrice = 0;
+}
+
+<main id="content" class="page-section inner-page-sec-padding-bottom space-db--20">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!-- Checkout Form s-->
+                <div class="checkout-form">
+                    <div class="row row-40">
+                        <div class="col-12">
+                            <h1 class="quick-title">Checkout</h1>
+                            <!-- Slide Down Trigger  -->
+                            <div class="checkout-quick-box">
+                                <p>
+                                    <i class="far fa-sticky-note"></i>Returning customer? <a href="javascript:"
+                                                                                             class="slide-trigger" data-target="#quick-login">
+                                        Click
+                                        here to login
+                                    </a>
+                                </p>
+                            </div>
+                            <!-- Slide Down Blox ==> Login Box  -->
+                            <div class="checkout-slidedown-box" id="quick-login">
+                                <form action="https://demo.hasthemes.com/pustok-preview/pustok/">
+                                    <div class="quick-login-form">
+                                        <p>
+                                            If you have shopped with us before, please enter your details in the
+                                            boxes below. If you are a new
+                                            customer
+                                            please
+                                            proceed to the Billing & Shipping section.
+                                        </p>
+                                        <div class="form-group">
+                                            <label for="quick-user">Username or email *</label>
+                                            <input type="text" placeholder="" id="quick-user">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="quick-pass">Password *</label>
+                                            <input type="text" placeholder="" id="quick-pass">
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="d-flex align-items-center flex-wrap">
+                                                <a href="#" class="btn btn-outlined   mr-3">Login</a>
+                                                <div class="d-inline-flex align-items-center">
+                                                    <input type="checkbox" id="accept_terms" class="mb-0 mr-1">
+                                                    <label for="accept_terms" class="mb-0">
+                                                        I’ve read and accept
+                                                        the terms &amp; conditions
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <p>
+                                                <a href="javascript:" class="pass-lost mt-3">
+                                                    Lost your
+                                                    password?
+                                                </a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- Slide Down Trigger  -->
+                            <div class="checkout-quick-box">
+                                <p>
+                                    <i class="far fa-sticky-note"></i>Have a coupon? <a href="javascript:"
+                                                                                        class="slide-trigger" data-target="#quick-cupon">
+                                        Click here to enter your code
+                                    </a>
+                                </p>
+                            </div>
+                            <!-- Slide Down Blox ==> Cupon Box -->
+                            <div class="checkout-slidedown-box" id="quick-cupon">
+                                <form action="https://demo.hasthemes.com/pustok-preview/pustok/">
+                                    <div class="checkout_coupon">
+                                        <input type="text" class="mb-0" placeholder="Coupon Code">
+                                        <a href="#" class="btn btn-outlined">Apply coupon</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 mb--20">
+                            <!-- Billing Address -->
+                            <div id="billing-form" class="mb-40">
+                                <h4 class="checkout-title">Billing Address</h4>
+                                <form id="formOrder" asp-action="order" asp-controller="book" method="post">
+                                    <div class="row">
+                                        <div class="col-md-6 col-12 mb--20">
+                                            <label asp-for="FullName">Full name</label>
+                                            <input asp-for="FullName" placeholder="Full name">
+                                        </div>
+                                        <div class="col-md-6 col-12 mb--20">
+                                            <label asp-for="Country">Country</label>
+                                            <input asp-for="Country" placeholder="Country">
+                                        </div>
+                                        <div class="col-md-6 col-12 mb--20">
+                                            <label asp-for="Email">Email</label>
+                                            <input asp-for="Email" placeholder="Email">
+                                        </div>
+                                        <div class="col-md-6 col-12 mb--20">
+                                            <label asp-for="PhoneNumber">PhoneNumber</label>
+                                            <input asp-for="PhoneNumber" placeholder="PhoneNumber">
+                                        </div>
+                                        <div class="col-md-12 col-12 mb--20">
+                                            <label asp-for="Address1">Address1</label>
+                                            <input asp-for="Address1" placeholder="Address1">
+                                        </div>
+                                        <div class="col-md-12 col-12 mb--20">
+                                            <label asp-for="Address2">Address2</label>
+                                            <input asp-for="Address2" placeholder="Address2">
+                                        </div>
+                                        <div class="col-md-6 col-12 mb--20">
+                                            <label asp-for="City">City</label>
+                                            <input asp-for="City" placeholder="City">
+                                        </div>
+                                        <div class="col-md-6 col-12 mb--20">
+                                            <label asp-for="ZipCode">ZipCode</label>
+                                            <input asp-for="ZipCode" placeholder="ZipCode">
+                                        </div>
+
+                                    </div>
+                                    <!-- Shipping Address -->
+                                    <div class="order-note-block mt--30">
+                                        <label asp-for="Note">Order notes</label>
+                                        <textarea asp-for="Note" cols="30" rows="10" class="order-note"
+                                                  placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="row">
+                                <!-- Cart Total -->
+                                <div class="col-12">
+                                    <div class="checkout-cart-total">
+                                        <h2 class="checkout-title">YOUR ORDER</h2>
+                                        <h4>Product <span>Total</span></h4>
+                                        <ul>
+                                            @foreach (var item in Model.CheckoutItems)
+                                            {
+                                                double price = (item.Book.SalePrice * (1 - item.Book.Discount / 100)) * item.Count;
+                                                <li>
+                                                    <span class="left">@item.Book.Name X @item.Count</span>
+                                                    <span class="right">$@Math.Round(price,2)</span>
+                                                </li>
+                                                totalPrice += price;
+                                            }
+                                        </ul>
+                                        <h4>Total Price <span>$@Math.Round(totalPrice,2)</span></h4>
+                                        <div class="method-notice mt--25">
+                                            <article>
+                                                <h3 class="d-none sr-only">blog-article</h3>
+                                                Sorry, it seems that there are no available payment methods for
+                                                your state. Please contact us if you
+                                                require
+                                                assistance
+                                                or wish to make alternate arrangements.
+                                            </article>
+                                        </div>
+                                        <div class="term-block">
+                                            <input type="checkbox" id="accept_terms2">
+                                            <label for="accept_terms2">
+                                                I’ve read and accept the terms &
+                                                conditions
+                                            </label>
+                                        </div>
+                                        <button type="submit" form="formOrder" class="place-order w-100">Place order</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
