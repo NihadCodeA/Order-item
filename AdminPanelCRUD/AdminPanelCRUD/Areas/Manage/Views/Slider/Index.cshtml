@@ -1,7 +1,7 @@
-﻿@model List<Slider>;
+﻿@model PaginatedList<Slider>;
 @{
     ViewData["Title"]="Index";
-    int count = 0;
+    int count = (Model.Page-1)*3;
 }
 
 <div class="container-fluid mt-5">
@@ -46,4 +46,23 @@
             }
         </tbody>
     </table>
+    <form method="get">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                @if (Model.HasPrevious)
+                {
+                    <li class="page-item"><a class="page-link" asp-controller="slider" asp-action="index" asp-route-page="@(Model.Page-1)">Previous</a></li>
+                }
+                @for (int i = 1; i <= Model.TotalPage; i++)
+                {
+                    <li class="page-item @(Model.Page==i ? "active" : "")"><a class="page-link" asp-controller="slider" asp-action="index" asp-route-page="@i">@i</a></li>
+
+                }
+                @if (Model.HasNext)
+                {
+                    <li class="page-item"><a class="page-link" asp-controller="slider" asp-action="index" asp-route-page="@(Model.Page+1)">Next</a></li>
+                }
+            </ul>
+        </nav>
+    </form>
 </div>

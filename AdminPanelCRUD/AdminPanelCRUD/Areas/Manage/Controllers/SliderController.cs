@@ -17,10 +17,12 @@ namespace AdminPanelCRUD.Areas.Manage.Controllers
             _pustokContext = pustokContext;
             _env=env;
         }
-        public IActionResult Index()
+        public IActionResult Index(int page=1)
         {
-            List<Slider> sliderList = _pustokContext.Sliders.ToList();
-            return View(sliderList);
+            //List<Slider> sliderList = _pustokContext.Sliders.ToList();
+            var query=_pustokContext.Sliders.AsQueryable();
+            var paginatedList = PaginatedList<Slider>.Create(query,3,page);
+            return View(paginatedList);
         }
         [HttpGet]
         public IActionResult Create()

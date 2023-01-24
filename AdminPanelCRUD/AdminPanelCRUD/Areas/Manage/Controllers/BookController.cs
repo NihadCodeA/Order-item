@@ -17,12 +17,15 @@ namespace AdminPanelCRUD.Areas.Manage.Controllers
             _pustokContext = pustokContext;
             _env = env;
         }
-        public IActionResult Index()
+        public IActionResult Index(int page=1)
         {
             List<Book> books = _pustokContext.Books.Include(x => x.Author).Include(x => x.Genre).Include(x => x.BookImages).ToList();
             ViewBag.Authors = _pustokContext.Authors.ToList();
             ViewBag.Genres = _pustokContext.Genres.ToList();
-            return View(books);
+            var query=_pustokContext.Books.AsQueryable();
+            //PaginatedList<Book> pagenatedBooks = new PaginatedList<Book>(query.Skip((page-1)*5).Take(5).ToList(),query.Count(),page,5);
+            var pagenatedBooks = PaginatedList<Book>.Create(query, 5, page);
+            return View(pagenatedBooks);
         }
         [HttpGet]
         public IActionResult Create()
